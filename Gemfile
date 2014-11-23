@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
+ruby "2.1.5"
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -35,6 +36,16 @@ gem 'rspec-rails', '~> 3.1.0'
 gem 'shoulda-matchers', '~> 2.7.0'
 gem 'factory_girl_rails', '~> 4.5.0'
 gem 'capybara', '~> 2.4.4'
+
+# Heroku integration
+gem 'rails_12factor', '~> 0.0.3', group: :production
+gem 'unicorn', '~> 4.8.3'
+
+# Prettiness
+group :development do
+  gem 'pry-rails', '~> 0.3.2'
+  gem 'awesome_print', '~> 1.2.0'
+end
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
