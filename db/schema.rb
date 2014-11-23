@@ -11,24 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141122145516) do
+ActiveRecord::Schema.define(version: 20141123093255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "pgcrypto"
 
   create_table "horoscopes", force: true do |t|
-    t.text     "forecast"
-    t.date     "date"
-    t.integer  "user_id"
+    t.text     "forecast",   null: false
+    t.date     "date",       null: false
+    t.integer  "zodiac_id",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "horoscopes", ["user_id"], name: "index_horoscopes_on_user_id", using: :btree
+  add_index "horoscopes", ["zodiac_id"], name: "index_horoscopes_on_zodiac_id", using: :btree
 
   create_table "sessions", force: true do |t|
-    t.integer  "user_id"
+    t.integer  "user_id",    null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -36,11 +36,17 @@ ActiveRecord::Schema.define(version: 20141122145516) do
   add_index "sessions", ["user_id"], name: "index_sessions_on_user_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "email"
-    t.string   "password"
-    t.date     "birthday"
+    t.string   "email",      null: false
+    t.string   "password",   null: false
+    t.date     "birthday",   null: false
+    t.integer  "zodiac_id",  null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "zodiacs", force: true do |t|
+    t.string    "sign", null: false
+    t.daterange "date", null: false
   end
 
 end

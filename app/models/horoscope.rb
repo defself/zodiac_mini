@@ -1,5 +1,5 @@
 class Horoscope < ActiveRecord::Base
-  belongs_to :user
+  belongs_to :zodiac
 
-  validates :forecast, :date, presence: true
+  validates :forecast, :date, :zodiac_id, presence: true
 end
