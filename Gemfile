@@ -43,6 +43,10 @@ end
 # Heroku integration
 gem 'rails_12factor', '~> 0.0.3', group: :production
 
+# Emberjs
+gem 'ember-rails', '~> 0.15.0'
+gem 'ember-source', '~> 1.8.1'
+
 # Prettiness
 group :development do
   gem 'pry-rails', '~> 0.3.2'
