@@ -1,17 +1,18 @@
 %h1= @user.email
 
-%h2 Horoscope for Today:
-
+%h2 Horoscope for Yesterday:
 - if @yesterday.present?
   %p= @yesterday.forecast
 - else
   %p There is no forecast for yesterday yet...
 
+%h2 Horoscope for Today:
 - if @today.present?
   %p= @today.forecast
 - else
   %p There is no forecast for today yet...
 
+%h2 Horoscope for Tomorrow:
 - if @tomorrow.present?
   %p= @tomorrow.forecast
   = @tomorrow.inspect
