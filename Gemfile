@@ -37,7 +37,10 @@ group :development, :test do
   gem 'rspec-expectations', '~> 3.1.2'
   gem 'shoulda-matchers', '~> 2.7.0'
   gem 'factory_girl_rails', '~> 4.5.0'
+end
+group :test do
   gem 'capybara', '~> 2.4.4'
+  gem 'simplecov', '~> 0.9.1', require: false
 end
 
 # Heroku integration

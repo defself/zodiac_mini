@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :horoscope do
-    forecast "MyText"
-    date "2014-11-22"
+    forecast "Today is a wonderful day!"
+    date Date.current
     zodiac nil
   end
 
