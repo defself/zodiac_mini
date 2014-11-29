@@ -1,61 +1,88 @@
 require 'rails_helper'
 
 describe SessionsController do
+  render_views
+
   let(:zodiac) { create :zodiac }
-  let(:user) { create :user, zodiac: zodiac }
+  let(:user)   { create :user, zodiac: zodiac }
 
   describe "GET new" do
-    it "returns http success" do
-      get :new
-      expect(response).to have_http_status(:success)
-      expect(assigns(:session)).to be_a_new(Session)
+
+    context "when successfully" do
+      before { get :new }
+
+      it { expect(response).to be_success }
+      it { expect(assigns(:session)).to be_a_new(Session) }
     end
 
-    it "is authorized" do
-      user_login user
+    context "when is authorized" do
+      before do
+        sign_in user
+        get :new
+      end
 
-      get :new
-      expect(response).to redirect_to(users_path)
+      it { expect(response).to redirect_to(users_path) }
     end
   end
 
   describe "POST create" do
-    let(:session_params) { { session: { email: "qwerty@gmail.com", password: "123456789" }} }
-    let(:invalid_session_params) { { session: { email: "qwerty@gmail.com", password: "invalid" }} }
 
-    before { user }
+    context "when successfully" do
+      let(:session_params) {{ email: user.email, password: user.password }}
 
-    it "returns http success" do
-      expect { post :create, session_params }.to change { Session.count }.by 1
-      expect(response).to redirect_to(user_path user)
-      expect(assigns(:user)).to eq(user)
-      expect(flash[:success]).to be_present
-      expect(session[:user_id]).to eq user.id
+      it "creates a session" do
+        expect { post :create, session: session_params }.to change(Session, :count).by 1
+        expect(response).to redirect_to(user_path user)
+        expect(assigns(:user)).to eq(user)
+        expect(flash[:success]).to be_present
+        expect(session[:user_id]).to eq user.id
+      end
     end
 
-    it "returns http error" do
-      expect { post :create, invalid_session_params }.to_not change(Session, :count)
-      expect(response).to redirect_to(new_session_path)
-      expect(assigns(:user)).to be_nil
-      expect(flash[:error]).to be_present
-      expect(session[:user_id]).to be_nil
+    context "when failure" do
+      let(:session_params) {{ email: user.email, password: "invalid" }}
+
+      it "doesn't create a session" do
+        expect { post :create, session: session_params }.to_not change(Session, :count)
+        expect(response).to render_template(:new)
+        expect(assigns(:user)).to be_nil
+        expect(flash[:error]).to be_present
+        expect(session[:user_id]).to be_nil
+      end
     end
   end
 
   describe "DELETE destroy" do
-    it "returns http success" do
-      user_login user
 
-      expect { delete :destroy, id: user.id }.to change { Session.count }.by -1
-      expect(response).to redirect_to(new_session_path)
-      expect(flash[:success]).to be_present
-      expect(session[:user_id]).to be_nil
+    context "when successfully" do
+      before do
+        sign_in user
+      end
+
+      it "deletes a session" do
+        expect { delete :destroy, id: user.id }.to change(Session, :count).by -1
+        expect(response).to redirect_to(new_session_path)
+        expect(flash[:success]).to be_present
+        expect(session[:user_id]).to be_nil
+      end
     end
 
-    it "is not authorized" do
-      delete :destroy, id: user.id
-      expect(response).to redirect_to(root_path)
-      expect(flash[:error]).to eq "First log in to use the web site"
+    context "when is not authorized" do
+      before { delete :destroy, id: user.id }
+
+      it { expect(response).to redirect_to(root_path) }
+      it { expect(flash[:error]).to eq "First log in to use the web site" }
+    end
+
+    context "when failure" do
+      before { sign_in user }
+
+      it "doesn't delete a session" do
+        expect { delete :destroy, id: "" }.to_not change(Session, :count)
+        expect(response).to redirect_to(root_path)
+        expect(flash[:error]).to be_present
+        expect(session[:user_id]).to_not be_nil
+      end
     end
   end
 

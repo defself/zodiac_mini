@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(version: 20141123093255) do
   end
 
   create_table "zodiacs", force: true do |t|
-    t.string    "sign", null: false
+    t.integer   "sign", null: false
     t.daterange "date", null: false
   end
 

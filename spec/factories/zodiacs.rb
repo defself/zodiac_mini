@@ -1,7 +1,11 @@
 FactoryGirl.define do
   factory :zodiac do
-    sign "leo"
-    date Date.today..Float::INFINITY
+    sequence :sign do
+      Zodiac.signs.keys[rand 12]
+    end
+    sequence :date do
+      Zodiac.find_by(sign: Zodiac.signs[sign].to_s).date
+    end
   end
 
 end

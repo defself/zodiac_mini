@@ -1,2 +1,21 @@
-%h1 Users#show
-%p Find me in app/views/users/show.html.haml
+%h1= @user.email
+
+%h2 Horoscope for Today:
+
+- if @yesterday.present?
+  %p= @yesterday.forecast
+- else
+  %p There is no forecast for yesterday yet...
+
+- if @today.present?
+  %p= @today.forecast
+- else
+  %p There is no forecast for today yet...
+
+- if @tomorrow.present?
+  %p= @tomorrow.forecast
+  = @tomorrow.inspect
+- else
+  %p There is no forecast for tomorrow yet...
+
+= link_to "All users", users_path

@@ -1,8 +1,10 @@
 FactoryGirl.define do
   factory :user do
-    email "qwerty@gmail.com"
+    sequence :email do |n|
+      "#{zodiac.sign}_#{n}@zodiac.com"
+    end
     password "123456789"
-    birthday "2014-11-22"
+    birthday 24.years.ago
     zodiac nil
   end
 
