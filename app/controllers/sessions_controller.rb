@@ -1,9 +1,15 @@
 class SessionsController < ApplicationController
   before_filter :authenticate_user, except: [:new, :create]
   before_filter :redirect_to_root, only: :new
+  skip_before_action :verify_authenticity_token, only: [:create, :destroy]
 
   def new
     @session = Session.new
+  end
+
+  def show
+    @user = User.find_by id: params[:id]
+    render json: { session: @user.session }
   end
 
   def create
@@ -11,21 +17,20 @@ class SessionsController < ApplicationController
     if @user
       @user.create_session
       session[:user_id] = @user.id
-      redirect_to user_path(@user), success: "User signed in successfully"
+      render json: { session: @user }
     else
       @session = Session.new
       flash[:error] = "User not found"
-      render new_session_path
+      render json: { error: "User not found" }, status: 422
     end
   end
 
   def destroy
-    user = User.find_by id: params[:id]
-    if user && user.session.destroy
+    if @current_user.session.destroy
       session[:user_id] = nil
-      redirect_to new_session_path, success: "User have been logged out"
+      render json: { success: "User have been logged out" }
     else
-      redirect_to root_path, error: "User haven't been logged out"
+      render json: { error: "User haven't been logged out" }, status: 422
     end
   end
 

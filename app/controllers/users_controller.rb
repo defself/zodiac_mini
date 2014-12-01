@@ -1,8 +1,10 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user, except: [:new, :create]
+  skip_before_action :verify_authenticity_token, only: [:create]
 
   def index
     @users = User.all
+    render json: { users: @users }
   end
 
   def new
@@ -10,10 +12,8 @@ class UsersController < ApplicationController
   end
 
   def show
-    @user      = User.find_by id: params[:id]
-    @yesterday = @user.horoscopes.yesterday
-    @today     = @user.horoscopes.today
-    @tomorrow  = @user.horoscopes.tomorrow
+    @user = User.find_by id: params[:id]
+    render json: { user: @user }
   end
 
   def create
@@ -21,11 +21,17 @@ class UsersController < ApplicationController
     if @user.save
       @user.create_session
       session[:user_id] = @user.id
-      redirect_to @user, success: "User signed up successfully"
+      render json: { user: @user }
     else
       flash[:error] = @user.errors.full_messages
-      render new_user_path
+      render json: { error: @user.errors.full_messages }, status: 422
     end
+  end
+
+  def horoscope
+    @user      = User.find_by id: params[:user_id]
+    @horoscope = @user.horoscopes.send(params[:type])
+    render json: { horoscope: [@horoscope] }
   end
 
   private
@@ -33,4 +39,5 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:email, :birthday, :password, :password_confirmation)
   end
+
 end
