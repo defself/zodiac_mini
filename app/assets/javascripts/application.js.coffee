@@ -2,10 +2,13 @@
 #= require foundation
 #= require turbolinks
 #= require handlebars
-
-# for more details see: http://emberjs.com/guides/application/
-#window.ZodiacMini = Ember.Application.create()
+#= require ember
+#= require ember-data
+#= require_self
+#= require zodiac_mini
 
 ->
   $(document).foundation()
 
+# for more details see: http://emberjs.com/guides/application/
+window.ZodiacMini = Ember.Application.create()

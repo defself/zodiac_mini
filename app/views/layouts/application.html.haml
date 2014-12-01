@@ -16,3 +16,64 @@
     = yield
 
     = javascript_include_tag "application"
+
+
+    // Registration
+    %script{"data-template-name" => "users/new", type: "text/x-handlebars"}
+      %h1 Create New User
+      {{sign-up-form submit="createUser" submitTitle="Register"}}
+
+    %script{"data-template-name" => "components/sign-up-form", type: "text/x-handlebars"}
+      <form {{action "submit" on="submit"}}>
+      %p
+        %label Email {{input type="email" value=email}}
+      %p
+        %label Birthday {{input type="date" value=birthday}}
+      %p
+        %label Password {{input type="password" value=password}}
+      %p
+        %label Password Confirmation {{input type="password" value=password_confirmation}}
+
+      <input class="button" type="submit" {{bind-attr value=submitTitle}}>
+
+
+    // Show user
+    %script{"data-template-name" => "users/show", type: "text/x-handlebars"}
+      %h1 {{email}}
+      %ul
+        %li
+          <button {{action "horoscope" id "yesterday"}}>Yesterday</button>
+          #yesterday
+        %li
+          <button {{action "horoscope" id "today"}}>Today</button>
+          #today
+        %li
+          <button {{action "horoscope" id "tomorrow"}}>Tomorrow</button>
+          #tomorrow
+      {{#link-to 'users.new'}}Register{{/link-to}}
+      {{#link-to 'users.index'}}Users{{/link-to}}
+      <button class="alert" {{action "logOut" id}}>Log out</button>
+
+
+    // Users list
+    %script{"data-template-name" => "users/index", type: "text/x-handlebars"}
+      %h1 Users list
+      %ul
+        {{#each user in model}}
+        %li {{#link-to 'users.show' user.id}}{{user.email}}{{/link-to}} ({{user.birthday}})
+        {{/each}}
+
+
+    // Login
+    %script{"data-template-name" => "sessions/new", type: "text/x-handlebars"}
+      %h1 Login
+      {{sign-in-form submit="submit" submitTitle="Login"}}
+
+    %script{"data-template-name" => "components/sign-in-form", type: "text/x-handlebars"}
+      <form {{action "submit" on="submit"}}>
+      %p
+        %label Email {{input type="email" value=email}}
+      %p
+        %label Password {{input type="password" value=password}}
+
+      <input type="submit" {{bind-attr value=submitTitle}}>

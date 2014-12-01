@@ -1,12 +1,10 @@
 # http://emberjs.com/guides/models/#toc_store
 # http://emberjs.com/guides/models/pushing-records-into-the-store/
 
-#ZodiacMini.Store = DS.Store.extend({
-
-#})
+ZodiacMini.ApplicationStore = DS.Store.extend({
+})
 
 # Override the default adapter with the `DS.ActiveModelAdapter` which
 # is built to work nicely with the ActiveModel::Serializers gem.
-#ZodiacMini.ApplicationAdapter = DS.ActiveModelAdapter.extend({
-
-#})
+ZodiacMini.ApplicationAdapter = DS.ActiveModelAdapter.extend({
+})
