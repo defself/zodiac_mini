@@ -6,7 +6,7 @@ ZodiacMini.UsersNewController = Ember.ObjectController.extend(
         self.transitionToRoute "users.show", id: user.id
 
       onFail = (user) ->
-        alert "shit"
+        alert "Sign up failed"
 
       @store.createRecord("user", user).save().then(onSuccess, onFail)
 )
