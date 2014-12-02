@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe "Session", type: :feature do
-  let(:zodiac) { create :zodiac }
+describe "Session", js: true do
+  let(:zodiac) { Zodiac.all[rand 12] }
   let(:user)   { create :user, zodiac: zodiac }
 
   it "sign in page" do

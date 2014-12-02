@@ -1,9 +1,13 @@
 def sign_in user
-  user.create_session
-  session[:user_id] = user.id
+  if user && user.session.nil?
+    user.create_session
+    session[:user_id] = user.id
+  end
 end
 
-def log_out user
-  user.session.destroy
-  session[:user_id] = nil
+def sign_out user
+  if user && user.session
+    user.session.destroy
+    session[:user_id] = nil
+  end
 end

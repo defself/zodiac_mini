@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-describe "User", type: :feature do
-  let(:zodiac)    { create :zodiac }
+describe "User", js: true do
+  let(:zodiac)    { Zodiac.all[rand 12]  }
   let(:user)      { create :user, zodiac: zodiac }
   let(:yesterday) { create :horoscope, zodiac: zodiac, forecast: "All was good" }
   let(:today)     { create :horoscope, zodiac: zodiac, forecast: "All is good" }
@@ -15,14 +15,24 @@ describe "User", type: :feature do
     Horoscope.stub(:tomorrow).and_return(tomorrow)
   end
 
-  it "sign in page" do
-    visit user_path(user)
+  it "registration" do
+    visit "#{new_user_path}##{new_user_path}"
+
+
+  end
+
+  it "home page" do
+    visit "#{new_user_path}##{user_path(user)}"
 
     expect(page).to have_content user.email
+
+    click_button "Yesterday"
     expect(page).to have_content yesterday.forecast
     expect(page).to have_content today.forecast
+
+    click_button "Tomorrow"
     expect(page).to have_content tomorrow.forecast
-    expect(page).to have_link("All users", href: users_path)
+    expect(page).to have_link("All users")#, href: "#{new_user_path}##{users_path}")
 
     click_link("All users")
 
@@ -30,8 +40,8 @@ describe "User", type: :feature do
   end
 
   it "all users" do
-    test_user = create(:user, email: "test@zodiac.com")
-    visit users_path
+    test_user = create(:user, email: "test@zodiac.com", zodiac: zodiac)
+    visit "#{new_user_path}##{users_path}"
 
     expect(page).to have_content "Users list"
     expect(page).to have_link(user.email)

@@ -21,7 +21,8 @@ class UsersController < ApplicationController
     if @user.save
       @user.create_session
       session[:user_id] = @user.id
-      render json: { user: @user }
+      flash[:success] = "User registered successfully"
+      render json: { user: @user }, status: 200
     else
       flash[:error] = @user.errors.full_messages
       render json: { error: @user.errors.full_messages }, status: 422

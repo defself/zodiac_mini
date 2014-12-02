@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe User do
-  let(:zodiac) { create :zodiac }
+  let(:zodiac) { Zodiac.all[rand 12] }
   let(:user) { build :user, zodiac: zodiac }
 
   it "should has validations" do

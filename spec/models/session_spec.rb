@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Session do
-  let(:zodiac) { create :zodiac }
+  let(:zodiac) { Zodiac.all[rand 12] }
   let(:user) { create :user, zodiac: zodiac }
   let(:session) { build :session, user: user }
 

@@ -10,12 +10,12 @@ class ApplicationController < ActionController::Base
   private
 
   def authenticate_user
-    unless current_user?
+    unless signed_in?
       redirect_to root_path, error: "First log in to use the web site"
     end
   end
 
-  def current_user?
+  def signed_in?
     @current_user = User.find_by id: session[:user_id]
     !(@current_user.nil? || @current_user.session.nil?)
   end

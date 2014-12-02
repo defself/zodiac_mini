@@ -3,7 +3,7 @@ require 'rails_helper'
 describe UsersController do
   render_views
 
-  let(:zodiac)    { create :zodiac }
+  let(:zodiac)    { Zodiac.all[rand 12] }
   let(:user)      { create :user, zodiac: zodiac }
   let(:horoscope) { create(:horoscope, zodiac: zodiac) }
 
@@ -16,7 +16,6 @@ describe UsersController do
     end
 
     it { expect(response).to be_success }
-    it { expect(response).to render_template(:index) }
     it("returns all users") { expect(assigns(:users)).to eq User.all }
   end
 
@@ -35,18 +34,17 @@ describe UsersController do
   end
 
   describe "POST create" do
-    before { log_out user }
+    before { sign_out user }
 
     context "when successfully" do
-      let(:user_params)   { attributes_for(:user, zodiac: zodiac) }
+      let(:user_params) { attributes_for(:user, zodiac: zodiac) }
 
       it "creates a user" do
         expect { post :create, user: user_params }.to change(Session, :count).by 1
-        user = assigns(:user)
-        expect(response).to redirect_to(user)
-        expect(assigns(:user)).to eq(user)
+        expect(response).to be_success
+        expect(assigns(:user)).to be_instance_of User
         expect(flash[:success]).to be_present
-        expect(session[:user_id]).to eq user.id
+        expect(session[:user_id]).to eq assigns(:user).id
       end
     end
 
@@ -55,7 +53,7 @@ describe UsersController do
 
       it "doesn't create a user" do
         expect { post :create, user: user_params }.to_not change(Session, :count)
-        expect(response).to render_template(:new)
+        expect(response).to have_http_status :unprocessable_entity
         expect(flash[:error]).to be_present
         expect(session[:user_id]).to eq nil
       end
