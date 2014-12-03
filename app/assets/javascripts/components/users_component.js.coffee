@@ -1,4 +1,4 @@
-ZodiacMini.SignUpFormComponent = Ember.Component.extend(
+ZodiacMini.SignUpFormComponent = Ember.Component.extend
   actions:
     submit: ->
       @sendAction "submit",
@@ -9,12 +9,10 @@ ZodiacMini.SignUpFormComponent = Ember.Component.extend(
 
     cancel: ->
       @sendAction "cancel"
-)
 
-ZodiacMini.SignInFormComponent = Ember.Component.extend(
+ZodiacMini.SignInFormComponent = Ember.Component.extend
   actions:
     submit: ->
       @sendAction "submit",
         email:    @get("email")
         password: @get("password")
-)

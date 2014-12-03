@@ -3,17 +3,17 @@ require 'rails_helper'
 describe Zodiac do
   let(:zodiac) { build :zodiac }
 
-  it "should has validations" do
+  it "has validations" do
     should validate_presence_of :sign
     should validate_presence_of :date
   end
 
-  it "should has relationships" do
+  it "has relationships" do
     should have_many :users
     should have_many :horoscopes
   end
 
-  it "should been saved successfully" do
+  it "is saved successfully" do
     expect(zodiac.save).to be_truthy
   end
 end

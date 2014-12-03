@@ -1,3 +1,2 @@
-ZodiacMini.Horoscope = DS.Model.extend(
+ZodiacMini.Horoscope = DS.Model.extend
   forecast: DS.attr('string')
-)

@@ -1,4 +1,4 @@
-ZodiacMini.SessionsNewController = Ember.ObjectController.extend(
+ZodiacMini.SessionsNewController = Ember.ObjectController.extend
   actions:
     submit: (session) ->
       self = this
@@ -8,4 +8,3 @@ ZodiacMini.SessionsNewController = Ember.ObjectController.extend(
         alert "Login failed"
 
       @store.createRecord("session", session).save().then(onSuccess, onFail)
-)

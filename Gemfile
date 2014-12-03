@@ -40,7 +40,9 @@ group :development, :test do
 end
 group :test do
   gem 'capybara', '~> 2.4.4'
+  gem 'selenium-webdriver', '~> 2.44.0'
   gem 'simplecov', '~> 0.9.1', require: false
+  gem 'database_cleaner', '~> 1.3.0'
 end
 
 # Heroku integration

@@ -3,11 +3,17 @@ class Horoscope < ActiveRecord::Base
 
   validates :forecast, :date, :zodiac_id, presence: true
 
-  scope :yesterday, -> { find_by date: Date.current - 1 }
-  scope :today,     -> { find_by date: Date.current }
-  #scope :tomorrow,  -> { find_by date: Date.current + 1 } TODO
+  class << self
+    def yesterday
+      find_by date: Date.current - 1
+    end
 
-  def self.tomorrow
-    find_by date: Date.current + 1
+    def today
+      find_by date: Date.current
+    end
+
+    def tomorrow
+      find_by date: Date.current + 1
+    end
   end
 end

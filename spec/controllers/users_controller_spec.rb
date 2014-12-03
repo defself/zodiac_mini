@@ -3,50 +3,62 @@ require 'rails_helper'
 describe UsersController do
   render_views
 
-  let(:zodiac)    { create :zodiac }
+  let(:zodiac)    { Zodiac.all[rand 12] }
   let(:user)      { create :user, zodiac: zodiac }
   let(:horoscope) { create(:horoscope, zodiac: zodiac) }
 
   before { sign_in user }
 
   describe "GET index" do
-    before do
-      create_list(:user, 3, zodiac: zodiac)
-      get :index
+    before { create_list(:user, 3, zodiac: zodiac) }
+
+    context "when successfully" do
+      before { get :index }
+
+      it { is_expected.to respond_with :success }
+      it { is_expected.to render_template :index }
+      it("returns all users") { expect(assigns(:users)).to eq User.all }
+
     end
 
-    it { expect(response).to be_success }
-    it { expect(response).to render_template(:index) }
-    it("returns all users") { expect(assigns(:users)).to eq User.all }
+    context "when is not authorized" do
+      before do
+        sign_out user
+        get :index
+      end
+
+      it { is_expected.to respond_with :found }
+      it { is_expected.to redirect_to new_session_path }
+
+    end
   end
 
   describe "GET new" do
-    it "returns http success" do
-      get :new
-      expect(response).to be_success
-    end
+    before { get :new }
+
+    it { is_expected.to respond_with :success }
+    it { is_expected.to render_template :new }
   end
 
   describe "GET show" do
-    it "returns http success" do
-      get :show, id: user.id
-      expect(response).to be_success
-    end
+    before { get :show, id: user.id }
+
+    it { is_expected.to respond_with :success }
+    it { is_expected.to render_template :show }
   end
 
   describe "POST create" do
-    before { log_out user }
+    before { sign_out user }
 
     context "when successfully" do
-      let(:user_params)   { attributes_for(:user, zodiac: zodiac) }
+      let(:user_params) { attributes_for(:user, zodiac: zodiac) }
 
       it "creates a user" do
         expect { post :create, user: user_params }.to change(Session, :count).by 1
-        user = assigns(:user)
-        expect(response).to redirect_to(user)
-        expect(assigns(:user)).to eq(user)
+        is_expected.to respond_with :found
+        expect(assigns(:user)).to be_instance_of User
         expect(flash[:success]).to be_present
-        expect(session[:user_id]).to eq user.id
+        expect(session[:user_id]).to eq assigns(:user).id
       end
     end
 
@@ -55,10 +67,28 @@ describe UsersController do
 
       it "doesn't create a user" do
         expect { post :create, user: user_params }.to_not change(Session, :count)
-        expect(response).to render_template(:new)
-        expect(flash[:error]).to be_present
+        is_expected.to respond_with :unprocessable_entity
+        expect(flash[:error]).to eq ["Password can't be blank"]
         expect(session[:user_id]).to eq nil
       end
+    end
+  end
+
+  describe "GET horoscope" do
+
+    it "yesterday" do
+      get :horoscope, user_id: user.id, type: "yesterday"
+      is_expected.to respond_with :success
+    end
+
+    it "today" do
+      get :horoscope, user_id: user.id, type: "today"
+      is_expected.to respond_with :success
+    end
+
+    it "tomorrow" do
+      get :horoscope, user_id: user.id, type: "tomorrow"
+      is_expected.to respond_with :success
     end
   end
 

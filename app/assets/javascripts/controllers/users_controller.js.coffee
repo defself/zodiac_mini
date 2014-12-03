@@ -1,4 +1,4 @@
-ZodiacMini.UsersNewController = Ember.ObjectController.extend(
+ZodiacMini.UsersNewController = Ember.ObjectController.extend
   actions:
     createUser: (user) ->
       self = this
@@ -9,9 +9,8 @@ ZodiacMini.UsersNewController = Ember.ObjectController.extend(
         alert "Sign up failed"
 
       @store.createRecord("user", user).save().then(onSuccess, onFail)
-)
 
-ZodiacMini.UsersShowController = Ember.ObjectController.extend(
+ZodiacMini.UsersShowController = Ember.ObjectController.extend
   actions:
     horoscope: (userId, type) ->
       onSuccess = (horoscope) ->
@@ -34,4 +33,3 @@ ZodiacMini.UsersShowController = Ember.ObjectController.extend(
       @store.find("session", id).then( (session) ->
         session.destroyRecord().then(onSuccess, onFail)
       )
-)

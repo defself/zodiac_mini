@@ -1,4 +1,3 @@
-ZodiacMini.Session = DS.Model.extend(
+ZodiacMini.Session = DS.Model.extend
   email:    DS.attr('string')
   password: DS.attr('string')
-)

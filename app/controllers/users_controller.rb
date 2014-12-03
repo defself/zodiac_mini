@@ -1,10 +1,11 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user, except: [:new, :create]
   skip_before_action :verify_authenticity_token, only: [:create]
+  respond_to :html, :json
 
   def index
     @users = User.all
-    render json: { users: @users }
+    respond_with @users
   end
 
   def new
@@ -13,7 +14,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by id: params[:id]
-    render json: { user: @user }
+    respond_with @user, root: true
   end
 
   def create
@@ -21,10 +22,11 @@ class UsersController < ApplicationController
     if @user.save
       @user.create_session
       session[:user_id] = @user.id
-      render json: { user: @user }
+      flash[:success] = "User registered successfully"
+      respond_with @user, root: true
     else
       flash[:error] = @user.errors.full_messages
-      render json: { error: @user.errors.full_messages }, status: 422
+      render json: { error: flash[:error] }, status: 422
     end
   end
 

@@ -1,9 +1,0 @@
-%h1 Sign in
-
-= form_for @session do |f|
-  = label_tag :email, "Email"
-  = email_field_tag :email, "", name: "session[email]"
-  = label_tag :password, "Password"
-  = password_field_tag :password, "", name: "session[password]"
-
-  = f.submit "Login"
