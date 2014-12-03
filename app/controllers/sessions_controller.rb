@@ -2,6 +2,7 @@ class SessionsController < ApplicationController
   before_filter :authenticate_user, except: [:new, :create]
   before_filter :redirect_to_root, only: :new
   skip_before_action :verify_authenticity_token, only: [:create, :destroy]
+  respond_to :html, :json
 
   def new
     @session = Session.new
@@ -9,7 +10,10 @@ class SessionsController < ApplicationController
 
   def show
     @user = User.find_by id: params[:id]
-    render json: { session: @user.session }
+    respond_to do |format|
+      format.html { redirect_to users_path }
+      format.json { respond_with @user.session, root: true }
+    end
   end
 
   def create

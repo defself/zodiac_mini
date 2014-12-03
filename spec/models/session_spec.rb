@@ -5,15 +5,15 @@ describe Session do
   let(:user) { create :user, zodiac: zodiac }
   let(:session) { build :session, user: user }
 
-  it "should has validations" do
+  it "has validations" do
     should validate_presence_of :user_id
   end
 
-  it "should has relationships" do
+  it "has relationships" do
     should belong_to :user
   end
 
-  it "should been saved successfully" do
+  it "is saved successfully" do
     expect(session.save).to be_truthy
   end
 end

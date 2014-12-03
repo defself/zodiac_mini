@@ -4,8 +4,8 @@ describe "Session", js: true do
   let(:zodiac) { Zodiac.all[rand 12] }
   let(:user)   { create :user, zodiac: zodiac }
 
-  it "sign in page" do
-    visit new_session_path
+  it "sign in / out" do
+    visit root_path
 
     expect(page).to have_content "Sign in"
     expect(page).to have_selector('form')
@@ -13,8 +13,14 @@ describe "Session", js: true do
     fill_in "Email",    with: user.email
     fill_in "Password", with: user.password
 
-    click_button "Login"
+    click_button "Sign in"
     expect(page).to have_content user.email
+
+    visit user_path(user)
+    expect(page).to have_content user.email
+
+    click_button "Sign out"
+    expect(page).to have_content "Sign in"
   end
 
 end

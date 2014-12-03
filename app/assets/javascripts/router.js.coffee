@@ -7,13 +7,15 @@ ZodiacMini.Router.map () ->
   @resource 'sessions', ->
     @route 'new'
 
-ZodiacMini.UsersIndexRoute = Ember.Route.extend(
+ZodiacMini.Router.reopen
+  location: 'history'
+
+ZodiacMini.UsersIndexRoute = Ember.Route.extend
   setupController: (controller, model) ->
     users = @store.find 'user'
     controller.set "content", users
-)
 
-ZodiacMini.UsersShowRoute = Ember.Route.extend(
+ZodiacMini.UsersShowRoute = Ember.Route.extend
   model: (params)->
     { id: params.id }
   setupController: (controller, model) ->
@@ -25,4 +27,3 @@ ZodiacMini.UsersShowRoute = Ember.Route.extend(
       )
       controller.set "content", user
     )
-)

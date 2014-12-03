@@ -18,6 +18,23 @@
     = javascript_include_tag "application"
 
 
+    // Sign in
+    %script{"data-template-name" => "sessions/new", type: "text/x-handlebars"}
+      %h1 Sign in
+      {{sign-in-form submit="submit" submitTitle="Sign in"}}
+
+    %script{"data-template-name" => "components/sign-in-form", type: "text/x-handlebars"}
+      <form {{action "submit" on="submit"}}>
+      %p
+        %label Email {{input type="email" value=email}}
+      %p
+        %label Password {{input type="password" value=password}}
+
+      <input class="button" type="submit" {{bind-attr value=submitTitle}}>
+      %span or
+      {{#link-to 'users.new'}}Register{{/link-to}}
+
+
     // Registration
     %script{"data-template-name" => "users/new", type: "text/x-handlebars"}
       %h1 Create New User
@@ -35,6 +52,17 @@
         %label Password Confirmation {{input type="password" value=password_confirmation}}
 
       <input class="button" type="submit" {{bind-attr value=submitTitle}}>
+      %span or
+      {{#link-to 'sessions.new'}}Sign in{{/link-to}}
+
+
+    // Users list
+    %script{"data-template-name" => "users/index", type: "text/x-handlebars"}
+      %h1 Users list
+      %ul
+        {{#each user in model}}
+        %li {{#link-to 'users.show' user.id}}{{user.email}}{{/link-to}} ({{user.birthday}})
+        {{/each}}
 
 
     // Show user
@@ -52,28 +80,4 @@
           #tomorrow
       {{#link-to 'users.new'}}Register{{/link-to}}
       {{#link-to 'users.index'}}All users{{/link-to}}
-      <button class="alert" {{action "logOut" id}}>Log out</button>
-
-
-    // Users list
-    %script{"data-template-name" => "users/index", type: "text/x-handlebars"}
-      %h1 Users list
-      %ul
-        {{#each user in model}}
-        %li {{#link-to 'users.show' user.id}}{{user.email}}{{/link-to}} ({{user.birthday}})
-        {{/each}}
-
-
-    // Login
-    %script{"data-template-name" => "sessions/new", type: "text/x-handlebars"}
-      %h1 Login
-      {{sign-in-form submit="submit" submitTitle="Login"}}
-
-    %script{"data-template-name" => "components/sign-in-form", type: "text/x-handlebars"}
-      <form {{action "submit" on="submit"}}>
-      %p
-        %label Email {{input type="email" value=email}}
-      %p
-        %label Password {{input type="password" value=password}}
-
-      <input type="submit" {{bind-attr value=submitTitle}}>
+      <button class="alert" {{action "logOut" id}}>Sign out</button>

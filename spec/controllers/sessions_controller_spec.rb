@@ -16,15 +16,24 @@ describe SessionsController do
         get :new
       end
 
-      it { expect(response).to be_success }
+      it { is_expected.to respond_with :success }
+      it { is_expected.to render_template :new }
       it { expect(assigns(:session)).to be_a_new Session }
     end
 
     context "when is authorized" do
       before { get :new }
 
-      it { expect(response).to redirect_to(users_path) }
+      it { is_expected.to redirect_to(users_path) }
     end
+  end
+
+  describe "GET show" do
+    before { get :show, id: user.id }
+
+    it { is_expected.to respond_with :found }
+    it { is_expected.to redirect_to(users_path) }
+
   end
 
   describe "POST create" do
@@ -35,8 +44,8 @@ describe SessionsController do
 
       it "creates a session" do
         expect { post :create, session: session_params }.to change(Session, :count).by 1
-        expect(response).to be_success
-        expect(assigns(:user)).to eq(user)
+        is_expected.to respond_with :success
+        expect(assigns(:user)).to eq user
         expect(flash[:success]).to be_present
         expect(session[:user_id]).to eq user.id
       end
@@ -47,8 +56,9 @@ describe SessionsController do
 
       it "doesn't create a session" do
         expect { post :create, session: session_params }.to_not change(Session, :count)
-        expect(response).to have_http_status :unprocessable_entity
-        expect(flash[:error]).to be_present
+        is_expected.to respond_with :unprocessable_entity
+        expect(assigns(:session)).to be_a_new Session
+        expect(flash[:error]).to eq "User not found"
         expect(session[:user_id]).to be_nil
       end
     end
@@ -58,7 +68,7 @@ describe SessionsController do
     context "when successfully" do
       it "deletes a session" do
         expect { delete :destroy, id: user.id }.to change(Session, :count).by -1
-        expect(response).to be_success
+        is_expected.to respond_with :success
         expect(flash[:success]).to be_present
         expect(session[:user_id]).to be_nil
       end
@@ -70,7 +80,7 @@ describe SessionsController do
         delete :destroy, id: user.id
       end
 
-      it { expect(response).to redirect_to(root_path) }
+      it { is_expected.to redirect_to new_session_path }
       it { expect(flash[:error]).to eq "First log in to use the web site" }
     end
 
@@ -82,7 +92,7 @@ describe SessionsController do
 
       it "doesn't delete a session" do
         expect { delete :destroy, id: user.id }.to_not change(Session, :count)
-        expect(response).to have_http_status :unprocessable_entity
+        is_expected.to respond_with :unprocessable_entity
         expect(flash[:error]).to be_present
       end
     end
