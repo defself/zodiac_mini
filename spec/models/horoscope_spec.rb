@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe Horoscope do
-  let(:zodiac) { Zodiac.all[rand 12] }
+  let(:zodiac)    { Zodiac.all[rand 12] }
   let(:horoscope) { build :horoscope, zodiac: zodiac }
 
   it "has validations" do

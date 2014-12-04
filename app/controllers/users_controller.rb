@@ -32,7 +32,7 @@ class UsersController < ApplicationController
 
   def horoscope
     @user      = User.find_by id: params[:user_id]
-    @horoscope = @user.horoscopes.send(params[:type])
+    @horoscope = Horoscope.send(params[:type], @user.zodiac.id)
     render json: { horoscope: [@horoscope] }
   end
 
