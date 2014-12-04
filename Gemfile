@@ -32,21 +32,19 @@ gem 'haml-rails', '~> 0.5.3'
 gem 'foundation-rails', '~> 5.4.5.0'
 
 # Tests
-group :development, :test do
-  gem 'rspec-rails', '~> 3.1.0'
-  gem 'rspec-expectations', '~> 3.1.2'
-  gem 'shoulda-matchers', '~> 2.7.0'
-  gem 'factory_girl_rails', '~> 4.5.0'
-end
-group :test do
-  gem 'capybara', '~> 2.4.4'
-  gem 'selenium-webdriver', '~> 2.44.0'
-  gem 'simplecov', '~> 0.9.1', require: false
-  gem 'database_cleaner', '~> 1.3.0'
-end
+gem 'rspec-rails', '~> 3.1.0'
+gem 'rspec-expectations', '~> 3.1.2'
+gem 'shoulda-matchers', '~> 2.7.0'
+gem 'factory_girl_rails', '~> 4.5.0'
+gem 'simplecov', '~> 0.9.1', require: false
+gem 'capybara', '~> 2.4.4'
+gem 'database_cleaner', '~> 1.3.0'
+gem 'selenium-webdriver', '~> 2.44.0'
 
 # Heroku integration
 gem 'rails_12factor', '~> 0.0.3', group: :production
+
+gem 'nokogiri'
 
 # Emberjs
 gem 'ember-rails', '~> 0.15.0'

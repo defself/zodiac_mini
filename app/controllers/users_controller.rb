@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_filter :authenticate_user, except: [:new, :create]
+  before_filter :redirect_to_root, only: :new
   skip_before_action :verify_authenticity_token, only: [:create]
   respond_to :html, :json
 
@@ -42,4 +43,7 @@ class UsersController < ApplicationController
     params.require(:user).permit(:email, :birthday, :password, :password_confirmation)
   end
 
+  def redirect_to_root
+    redirect_to users_path if signed_in?
+  end
 end
