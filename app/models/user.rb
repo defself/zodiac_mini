@@ -7,15 +7,17 @@ class User < ActiveRecord::Base
   validates :password, confirmation: true
   validates :email, uniqueness: true
 
-  before_validation :set_zodiac
-
-  def set_zodiac
-    self.zodiac = Zodiac.last # TODO
-  end
+  before_create :set_zodiac
 
   private
 
-  #def birthday_of_this_year
-  #  self.birthday + (Date.current.year - self.birthday.year).years
-  #end
+  def set_zodiac
+    self.zodiac = Zodiac.where("date @> ?::date", birthday_of_this_year).first
+  end
+
+  def birthday_of_this_year
+    birthday = self.birthday + (Date.current.year - self.birthday.year).years
+    birthday += 1.year if birthday < Date.new(birthday.year, 1, 20)
+    birthday
+  end
 end
