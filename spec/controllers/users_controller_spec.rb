@@ -17,7 +17,7 @@ describe UsersController do
 
       it { is_expected.to respond_with :success }
       it { is_expected.to render_template :index }
-      it("returns all users") { expect(assigns(:users)).to eq User.all }
+      it("returns all users") { expect(assigns(:users)).to eq User.order :birthday }
 
     end
 

@@ -24,6 +24,7 @@ ZodiacMini.UsersShowRoute = Ember.Route.extend
       self.store.find("horoscope", { type: "today", user_id: user.id }).then( (horoscope) ->
         forecast = horoscope.content[0].get("forecast")
         $("#today").html(forecast)
+        $(document).foundation "equalizer", "reflow"
       )
       controller.set "content", user
     )
