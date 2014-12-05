@@ -19,7 +19,7 @@ describe "Session", js: true do
     visit user_path(user)
     expect(page).to have_content user.email
 
-    click_button "Sign out"
+    find("#sign-out").click()
     expect(page).to have_content "Sign in"
   end
 

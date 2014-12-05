@@ -71,7 +71,7 @@
             %li.active
               {{#link-to 'users.index'}}All users{{/link-to}}
             %li
-              <a class="alert right" {{action "logOut" id}}>Sign out</a>
+              <a id="sign-out" class="alert right" {{action "logOut" id}}>Sign out</a>
 
       .row
         %h1.subheader.text-center Users list
@@ -94,7 +94,7 @@
             %li.active
               {{#link-to 'users.index'}}All users{{/link-to}}
             %li
-              <a class="alert right" {{action "logOut" id}}>Sign out</a>
+              <a id="sign-out" class="alert right" {{action "logOut" id}}>Sign out</a>
 
       .row
         %h1.subheader.text-center Horoscope for {{email}}

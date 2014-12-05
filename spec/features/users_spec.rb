@@ -18,7 +18,7 @@ describe "User", js: true do
 
   it "registration" do
     visit user_path(user)
-    click_button "Sign out"
+    find("#sign-out").click()
     expect(page).to have_content "Sign in"
 
     visit new_user_path
