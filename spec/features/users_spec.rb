@@ -17,6 +17,10 @@ describe "User", js: true do
   end
 
   it "registration" do
+    visit user_path(user)
+    click_button "Sign out"
+    expect(page).to have_content "Sign in"
+
     visit new_user_path
 
     fill_in "Email",    with: user_attrs[:email]

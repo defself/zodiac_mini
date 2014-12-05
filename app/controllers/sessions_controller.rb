@@ -9,10 +9,9 @@ class SessionsController < ApplicationController
   end
 
   def show
-    @user = User.find_by id: params[:id]
     respond_to do |format|
       format.html { redirect_to users_path }
-      format.json { respond_with @user.session, root: true }
+      format.json { respond_with @current_user.session, root: true }
     end
   end
 

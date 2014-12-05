@@ -36,8 +36,8 @@ describe UsersController do
   describe "GET new" do
     before { get :new }
 
-    it { is_expected.to respond_with :success }
-    it { is_expected.to render_template :new }
+    it { is_expected.to respond_with :found }
+    it { is_expected.to redirect_to users_path }
   end
 
   describe "GET show" do
