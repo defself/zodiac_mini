@@ -20,64 +20,104 @@
 
     // Sign in
     %script{"data-template-name" => "sessions/new", type: "text/x-handlebars"}
-      %h1 Sign in
       {{sign-in-form submit="submit" submitTitle="Sign in"}}
 
     %script{"data-template-name" => "components/sign-in-form", type: "text/x-handlebars"}
-      <form {{action "submit" on="submit"}}>
-      %p
-        %label Email {{input type="email" value=email}}
-      %p
-        %label Password {{input type="password" value=password}}
+      .row
+        .small-12.medium-6.medium-offset-3.columns
+          <form {{action "submit" on="submit"}}>
+          %fieldset
+            %legend Sign in
 
-      <input class="button" type="submit" {{bind-attr value=submitTitle}}>
-      %span or
-      {{#link-to 'users.new'}}Register{{/link-to}}
+            %label Email {{input type="email" value=email}}
+            %label Password {{input type="password" value=password}}
+
+            <input class="button" type="submit" {{bind-attr value=submitTitle}}>
+            %span or
+            {{#link-to 'users.new'}}Register{{/link-to}}
 
 
     // Registration
     %script{"data-template-name" => "users/new", type: "text/x-handlebars"}
-      %h1 Create New User
       {{sign-up-form submit="createUser" submitTitle="Register"}}
 
     %script{"data-template-name" => "components/sign-up-form", type: "text/x-handlebars"}
-      <form {{action "submit" on="submit"}}>
-      %p
-        %label Email {{input type="email" value=email}}
-      %p
-        %label Birthday {{input type="date" value=birthday}}
-      %p
-        %label Password {{input type="password" value=password}}
-      %p
-        %label Password Confirmation {{input type="password" value=password_confirmation}}
+      .row
+        .small-12.medium-6.medium-offset-3.columns
+          <form {{action "submit" on="submit"}}>
+          %fieldset
+            %legend Sign up
 
-      <input class="button" type="submit" {{bind-attr value=submitTitle}}>
-      %span or
-      {{#link-to 'sessions.new'}}Sign in{{/link-to}}
+            %label Email {{input type="email" value=email}}
+            %label Birthday {{input type="date" value=birthday}}
+            %label Password {{input type="password" value=password}}
+            %label Password Confirmation {{input type="password" value=password_confirmation}}
+
+            <input class="button" type="submit" {{bind-attr value=submitTitle}}>
+            %span or
+            {{#link-to 'sessions.new'}}Sign in{{/link-to}}
 
 
     // Users list
     %script{"data-template-name" => "users/index", type: "text/x-handlebars"}
-      %h1 Users list
-      %ul
-        {{#each user in model}}
-        %li {{#link-to 'users.show' user.id}}{{user.email}}{{/link-to}} ({{user.birthday}})
-        {{/each}}
+      // Header
+      %nav.top-bar{"data-topbar" => "", :role => "navigation"}
+        %ul.title-area
+          %li.name
+            %h1
+              %a{:href => "#"} Zodiac Mini
+        %section.top-bar-section
+          %ul.right
+            %li.active
+              {{#link-to 'users.index'}}All users{{/link-to}}
+            %li
+              <a class="alert right" {{action "logOut" id}}>Sign out</a>
+
+      .row
+        %h1.subheader.text-center Users list
+        %ul.side-nav.text-center
+          {{#each user in model}}
+          %li {{#link-to 'users.show' user.id}}{{user.email}}{{/link-to}}
+          {{/each}}
 
 
     // Show user
     %script{"data-template-name" => "users/show", type: "text/x-handlebars"}
-      %h1 {{email}}
-      %ul
-        %li
-          <button {{action "horoscope" id "yesterday"}}>Yesterday</button>
-          #yesterday
-        %li
-          <button {{action "horoscope" id "today"}}>Today</button>
-          #today
-        %li
-          <button {{action "horoscope" id "tomorrow"}}>Tomorrow</button>
-          #tomorrow
-      {{#link-to 'users.new'}}Register{{/link-to}}
-      {{#link-to 'users.index'}}All users{{/link-to}}
-      <button class="alert" {{action "logOut" id}}>Sign out</button>
+      // Header
+      %nav.top-bar{"data-topbar" => "", :role => "navigation"}
+        %ul.title-area
+          %li.name
+            %h1
+              %a{:href => "#"} Zodiac Mini
+        %section.top-bar-section
+          %ul.right
+            %li.active
+              {{#link-to 'users.index'}}All users{{/link-to}}
+            %li
+              <a class="alert right" {{action "logOut" id}}>Sign out</a>
+
+      .row
+        %h1.subheader.text-center Horoscope for {{email}}
+
+        .row{"data-equalizer" => ""}
+          %ul.small-block-grid-1.medium-block-grid-3
+            %li
+              <button class="expand" {{action "horoscope" id "yesterday"}}>Yesterday</button>
+              #yesterday.panel.text-center{"data-equalizer-watch" => ""}
+                %p
+                  Click
+                  = succeed "" do
+                    %strong Yesterday
+                  to get forecast...
+            %li
+              <button class="expand" {{action "horoscope" id "today"}}>Today</button>
+              #today.panel.text-center{"data-equalizer-watch" => ""}
+                %p Loading...
+            %li
+              <button class="expand" {{action "horoscope" id "tomorrow"}}>Tomorrow</button>
+              #tomorrow.panel.text-center{"data-equalizer-watch" => ""}
+                %p
+                  Click
+                  = succeed "" do
+                    %strong Tomorrow
+                  to get forecast...

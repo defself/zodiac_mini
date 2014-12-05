@@ -16,6 +16,7 @@ ZodiacMini.UsersShowController = Ember.ObjectController.extend
       onSuccess = (horoscope) ->
         forecast = horoscope.content[0].get("forecast")
         $("##{type}").html(forecast)
+        $(document).foundation "equalizer", "reflow"
 
       onFail = (horoscope) ->
         alert "Forecast for #{type} wasn't found"
